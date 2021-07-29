@@ -1,37 +1,37 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const p = path.join(
+const pathOfFile = path.join(
   path.dirname(process.mainModule.filename),
-  'data',
-  'products.json'
+  "data", //folder were file will be created
+  "products.json" //name of file created
 );
 
-const getProductsFromFile = cb => {
-  fs.readFile(p, (err, fileContent) => {
+const getProductsFromFile = (callback) => {
+  fs.readFile(pathOfFile, (err, fileContent) => {
     if (err) {
-      cb([]);
+      callback([]);
     } else {
-      cb(JSON.parse(fileContent));
+      callback(JSON.parse(fileContent));
     }
   });
 };
 
 module.exports = class Product {
-  constructor(t) {
-    this.title = t;
+  constructor(titleOFPage) {
+    this.title = titleOFPage;
   }
 
   save() {
-    getProductsFromFile(products => {
+    getProductsFromFile((products) => {
       products.push(this);
-      fs.writeFile(p, JSON.stringify(products), err => {
+      fs.writeFile(pathOfFile, JSON.stringify(products), (err) => {
         console.log(err);
       });
     });
   }
 
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
+  static fetchAll(callback) {
+    getProductsFromFile(callback);
   }
 };
